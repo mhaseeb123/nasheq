@@ -117,7 +117,7 @@ for i in range(cols):
         if (p1[j,i] > mx):
             mx = p1[j,i]
             ii = i
-            jj = jj
+            jj = j
     l1.append([ii * rows + jj])
 
 print ("\n")
