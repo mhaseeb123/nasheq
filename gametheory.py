@@ -18,28 +18,17 @@
 #                       none of it is the work of any other person.
 #=============================================================================
 
+#!/usr/bin/env python
 # coding: utf-8
 
 # # Import Packages
-
-# In[36]:
-
 
 import numpy as np
 import scipy as sp
 import pandas as pd
 import random
-import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
-from mpl_toolkits.mplot3d import Axes3D
-
 
 # # User Input
-
-# In[46]:
-
 
 # User strategy sets
 s1 = ["A1","A2","A3","A4","A5","A6","A7","A8","A9"]
@@ -61,14 +50,11 @@ while (rows < 1 or rows > szmax):
     rows = int (rows)
 
 while (cols < 1 or cols > szmax):
-    cols = input("Enter the number of rows: ")
+    cols = input("Enter the number of cols: ")
     cols = int(cols)
 
 
 # # Instantiate and Initialize Data
-
-# In[47]:
-
 
 p1 = np.ones((rows, cols), dtype=np.int32)
 p2 = np.ones((rows, cols), dtype=np.int32)
@@ -80,30 +66,154 @@ if (mode == "R"):
             p1[x,y] = random.randint(-99,99)
             p2[x,y] = random.randint(-99,99)
 
-print (p1)
-print (p2)
+    print ("------------------------------------")
+    print ("Player: Player1's strategies")
+    print ("------------------------------------")
 
+    sp1 = "{"
+    for kk in range(rows):
+        sp1 += s1[kk] + ", "
+    sp1 = sp1[:-2]
+    sp1+= "}"
+    print (sp1)
+
+    print ("\n------------------------------------")
+    print ("Player: Player1's payoffs")
+    print ("------------------------------------")
+
+
+    for kk in range(rows):
+        sp1 = ""
+        for ll in range (cols):
+            if (p1[kk, ll] < 0):
+                sp1 += str(p1[kk, ll]) + ",\t"
+            else:
+                sp1 += " " + str(p1[kk, ll]) + ",\t"
+        sp1 = sp1[:-2]
+        print (sp1)
+    
+    
+    print ("\n------------------------------------")
+    print ("Player: Player2's strategies")
+    print ("------------------------------------")
+
+    sp2 = "{"
+    for kk in range(cols):
+        sp2 += s2[kk] + ", "
+    sp2 = sp2[:-2]
+    sp2+= "}"
+    print (sp2)
+    
+    print ("\n------------------------------------")
+    print ("Player: Player2's payoffs")
+    print ("------------------------------------")
+
+
+    for kk in range(rows):
+        sp2 = ""
+        for ll in range (cols):
+            if (p2[kk, ll] < 0):
+                sp2 += str(p2[kk, ll]) + ",\t"
+            else:
+                sp2 += " " + str(p2[kk, ll]) + ",\t"
+        sp2 = sp2[:-2]
+        print (sp2)
+    
+    
 # Manual payoffs from the user input
 if (mode == "M"):
+    print ("Manual Entries")
     # Input from user
-    p1
-    p2
+    for x in range(rows):
+        for y in range(cols):
+            p1[x,y], p2[x,y] = map(int, input("Enter payoff for ( "+ s1[x] + ", " + s2[y] + " ) = ").split(','))
+            if (p1[x,y] > 99):
+                p1[x,y] = 99
+            if (p1[x,y] < -99):
+                p1[x,y] = -99
+            if (p2[x,y] > 99):
+                p2[x,y] = 99
+            if (p2[x,y] < -99):
+                p2[x,y] = -99
+                
+        print ("---------------------------")
 
 
 # # Print Game Function (input: p1, p2)
 
-# In[48]:
+def printgame(p1,p2):
+    # Horizontal line
+    hline = "   "
+    hline += "-" * (14 * (cols) + 1)
+    
+    st2 = " " * 10
+    
+    for ll in range (cols):
+        st2 += s2[ll] + " " * 12 # strategy name will take the rest of 2 characters making 15 chars gap
 
+    print (st2[:-12])
+    print (hline)
+    
+    for ii in range (rows):
+        rstr = s1[ii] + " |"
+        for jj in range (cols):
+            kal = str(p1[ii,jj])
+            kali = str(p2[ii,jj])
+            rstr += "  (" + kal
+            rstr += " " * (3-len(kal))
+            rstr += "," + kali
+            rstr += " " * (3-len(kali))
+            rstr += ")  |"
+        print (rstr)
+        print (hline)
+    
+# Print the game
+print ("\n=======================================")
+print ("Display Normal Form")
+print ("=======================================")
 
-#def printgame(p1,p2):
+printgame(p1,p2)
 
 
 # # Find Pure Nash Equilibrium in the game
 
-# In[49]:
-
-
+# Initialize the Nash Equilibrium to false
 nash = False
+
+def nasheq(p1,p2, li1, li2):
+    # Horizontal line
+    hline = "   "
+    hline += "-" * (14 * (cols) + 1)
+    
+    st2 = " " * 10
+    
+    for ll in range (cols):
+        st2 += s2[ll] + " " * 12 # strategy name will take the rest of 2 characters making 15 chars gap
+
+    print (st2[:-12])
+    print (hline)
+    
+    for ii in range (rows):
+        rstr = s1[ii] + " |"
+        for jj in range (cols):
+            kal = ""
+            kali = ""
+            if ((ii * cols + jj) in li1) == True:
+                kal = "H"
+            else:
+                kal = str(p1[ii,jj])
+                
+            if ((ii * cols + jj) in li2) == True:
+                kali = "H"
+            else:
+                kali = str(p2[ii,jj])
+            rstr += "  ("
+            rstr += " " * (3-len(kal)) + kal
+            rstr += "," + kali
+            rstr += " " * (3-len(kali))
+            rstr += ")  |"
+        print (rstr)
+        print (hline)
 
 # Nash Eq sites
 l1 = []
@@ -114,11 +224,12 @@ mx = 0
 for i in range(cols):
     mx = -10000000
     for j in range(rows):
-        if (p1[j,i] > mx):
+        if (p1[j,i] >= mx):
             mx = p1[j,i]
             ii = i
             jj = j
-    l1.append([ii * rows + jj])
+    #print (mx, ii, jj)
+    l1.append([jj * cols + ii])
 
 print ("\n")
     
@@ -126,11 +237,12 @@ print ("\n")
 for i in range(rows):
     mx = -10000000
     for j in range(cols):
-        if (p2[i,j] > mx):
+        if (p2[i,j] >= mx):
             mx = p2[i,j]
             ii = i
             jj = j
-    l2.append([ii * rows + jj])
+    #print (mx, ii, jj)
+    l2.append([ii * cols + jj])
 
 li1 = np.array(l1)
 li1 = np.reshape(li1, (1,np.product(li1.shape)))[0]
@@ -139,27 +251,30 @@ li2 = np.reshape(li2, (1,np.product(li2.shape)))[0]
 
 neq = np.intersect1d(li1, li2)
 
-prnt_str = "Pure Nash Equilibrium(s): "
+print ("=======================================")
+print ("Nash Pure Equilibrium Locations")
+print ("=======================================")
 
-for l in range (neq.size):
-    prnt_str += "(" + s1[int(neq[l]/cols)] + "," + s2[int(neq[l] % cols)] + ")" + " "
+nasheq(p1,p2, li1, li2)
 
-print (prnt_str)
-
-if neq.size > 0:
+if (neq.size > 0):
     nash = True
+    prnt_str = "\nPure Nash Equilibrium(s): "
+    for l in range (neq.size):
+        prnt_str += "(" + s1[int(neq[l]/cols)] + "," + s2[int(neq[l] % cols)] + ")" + "  "
+    print (prnt_str)
 else:
-    print ("Nash Equilibrium(s): None")
+    print ("\nNash Equilibrium(s): None")
+
 
 
 # # Belief Matrices
 
-# In[50]:
-
-
 # Belief arrays
 theta1 = np.zeros(rows, dtype=float)
 theta2 = np.zeros(cols)
+Theta1 = "("
+Theta2 = "("
 
 # Summation of probabilities
 pr = 0
@@ -185,14 +300,22 @@ if (rows != 2 or cols != 2):
         theta2[k] /= pr
 
     # Print the matrix
-    #print(theta1)
-    #print(theta2)
+    for k in range (theta1.size):
+        Theta1 += str(theta1[k].round(2)) + ", "
+        
+    for k in range (theta2.size):
+        Theta2 += str(theta2[k].round(2)) + ", "
+    
+    Theta1 = Theta1[:-2]
+    Theta2 = Theta2[:-2]
+    Theta1 += ")"
+    Theta2 += ")"
+    
+#    print(Theta1)
+#    print(Theta2)
 
 
 # # Best Response
-
-# In[51]:
-
 
 # Payoffs
 u1s = np.zeros(rows, dtype=float)
@@ -209,34 +332,31 @@ if (rows != 2 or cols != 2):
         for j in range(rows):
             u2s[i] += theta1[j] * p2[j,i]
 
-    print ("----------------------------------------------")
+    print ("\n----------------------------------------------")
     print ("Player 1 Expected Payoffs with Player 2 Mixing")
     print ("----------------------------------------------")
     for rr in range (u1s.size):
-        print ("U1(", s1[rr], ", ", theta2, ") = ", u1s[rr])
+        print ("U1(", s1[rr], ", ", Theta2, ") = ", u1s[rr])
     
     print ("\n----------------------------------------------")
     print ("Player 1 Best Response with Player 2 Mixing")
     print ("----------------------------------------------")
-    print ("BR1(Theta2) = {", s1[u1s.argmax()],"}\n")
+    print ("BR1",Theta2, "= {", s1[u1s.argmax()],"}\n")
     
     print ("----------------------------------------------")
     print ("Player 2 Expected Payoffs with Player 1 Mixing")
     print ("----------------------------------------------")
     for rr in range (u2s.size):
-        print ("U2(", s2[rr], ", ", theta1, ") = ", u2s[rr])
+        print ("U2(", s2[rr], ", ", Theta1, ") = ", u2s[rr])
 
     # Print Best Response
     print ("\n----------------------------------------------")
     print ("Player 2 Best Response with Player 1 Mixing")
     print ("----------------------------------------------")
-    print ("BR2(Theta1) = {", s2[u2s.argmax()],"}")
+    print ("BR2",Theta1," = {", s2[u2s.argmax()],"}")
 
 
 # # Expected Payoffs
-
-# In[52]:
-
 
 # Expected payoff for player 1
 exp1 = 0
@@ -253,19 +373,16 @@ if (rows != 2 or cols !=2):
         exp2 += u2s[i] * theta2[i]
     
     # Print
-    print("------------------------------------------------------")
+    print("\n------------------------------------------------------")
     print("Player 1 & 2 Expected Payoffs with both Players Mixing")
     print("------------------------------------------------------")
-    print ("U1(", theta1, ", ", theta2,") = ", exp1)
-    print ("U1(", theta2, ", ", theta1,") = ", exp2)
+    print ("U1(", Theta1, ", ", Theta2,") = ", exp1)
+    print ("U1(", Theta2, ", ", Theta1,") = ", exp2)
 
 
 # # Case: 2x2 Game
 
 # # Indifference 2 x 2 Game
-
-# In[53]:
-
 
 # Indifference Probabilities
 p = 0
@@ -290,5 +407,10 @@ if (rows == 2 and cols == 2 and nash == False):
     print ("Player 2 probability of strategies (", s2[1],") =", 1-q)
 
 elif (rows == 2 and cols == 2 and nash == True):
-    print ("Normal Form has Pure Strategy Equilibrium")
+    print ("\nNormal Form has Pure Strategy Equilibrium")
 
+
+# In[114]:
+
+
+ex = input ("\n Press Enter to Exit.. ")
