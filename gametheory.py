@@ -382,7 +382,7 @@ if (rows != 2 or cols !=2):
     print("Player 1 & 2 Expected Payoffs with both Players Mixing")
     print("------------------------------------------------------")
     print ("U1(", Theta1, ", ", Theta2,") = ", exp1.round(2))
-    print ("U1(", Theta2, ", ", Theta1,") = ", exp2.round(2))
+    print ("U2(", Theta2, ", ", Theta1,") = ", exp2.round(2))
 
 
 # # Case: 2x2 Game
