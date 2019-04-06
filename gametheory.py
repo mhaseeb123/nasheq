@@ -42,8 +42,13 @@ rows = 0
 cols = 0
 mode = "I"
 
+print ("---------------------------------------")
+print (" CAP5507: Game Theory Coding Assignment")
+print ("     Muhammad Haseeb, Rafay Khan")
+print ("---------------------------------------\n")
+
 while (mode != "R" and mode != "M"):
-    mode = input("Enter (R)andom or (M)anual payoffs entries\n")
+    mode = input("Enter (R)andom or (M)anual payoffs entries: ")
 
 while (rows < 1 or rows > szmax):
     rows = input("Enter the number of rows: ")
@@ -336,24 +341,24 @@ if (rows != 2 or cols != 2):
     print ("Player 1 Expected Payoffs with Player 2 Mixing")
     print ("----------------------------------------------")
     for rr in range (u1s.size):
-        print ("U1(", s1[rr], ", ", Theta2, ") = ", u1s[rr])
+        print ("U1("+ s1[rr]+ ", ", Theta2, ") = ", u1s[rr])
     
     print ("\n----------------------------------------------")
     print ("Player 1 Best Response with Player 2 Mixing")
     print ("----------------------------------------------")
-    print ("BR1",Theta2, "= {", s1[u1s.argmax()],"}\n")
+    print ("BR1", Theta2, "= {"+ s1[u1s.argmax()]+"}\n")
     
     print ("----------------------------------------------")
     print ("Player 2 Expected Payoffs with Player 1 Mixing")
     print ("----------------------------------------------")
     for rr in range (u2s.size):
-        print ("U2(", s2[rr], ", ", Theta1, ") = ", u2s[rr])
+        print ("U2("+ s2[rr]+ ", ", Theta1, ") = ", u2s[rr])
 
     # Print Best Response
     print ("\n----------------------------------------------")
     print ("Player 2 Best Response with Player 1 Mixing")
     print ("----------------------------------------------")
-    print ("BR2",Theta1," = {", s2[u2s.argmax()],"}")
+    print ("BR2",Theta1," = {" + s2[u2s.argmax()]+"}")
 
 
 # # Expected Payoffs
@@ -397,14 +402,14 @@ if (rows == 2 and cols == 2 and nash == False):
     const = p2[1,1] - p2[1,0]
     p = const/coeff
 
-    print ("------------------------------------------")
+    print ("\n------------------------------------------")
     print ("Player 1 & 2 Indifferent Mix Probabilities")
     print ("------------------------------------------")
     # Print Indifference Probabilities
-    print ("Player 1 probability of strategies (", s1[0],") =", p)
-    print ("Player 1 probability of strategies (", s1[1],") =", 1-p)
-    print ("Player 2 probability of strategies (", s2[0],") =", q)
-    print ("Player 2 probability of strategies (", s2[1],") =", 1-q)
+    print ("Player 1 probability of strategies ("+ s1[0] + ") =", p)
+    print ("Player 1 probability of strategies ("+ s1[1] +") =", 1-p)
+    print ("Player 2 probability of strategies ("+ s2[0] +") =", q)
+    print ("Player 2 probability of strategies ("+ s2[1] +") =", 1-q)
 
 elif (rows == 2 and cols == 2 and nash == True):
     print ("\nNormal Form has Pure Strategy Equilibrium")
@@ -413,4 +418,4 @@ elif (rows == 2 and cols == 2 and nash == True):
 # In[114]:
 
 
-ex = input ("\n Press Enter to Exit.. ")
+ex = input ("\nPress Enter to Exit.. ")
