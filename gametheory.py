@@ -341,7 +341,7 @@ if (rows != 2 or cols != 2):
     print ("Player 1 Expected Payoffs with Player 2 Mixing")
     print ("----------------------------------------------")
     for rr in range (u1s.size):
-        print ("U1("+ s1[rr]+ ", ", Theta2, ") = ", u1s[rr])
+        print ("U1("+ s1[rr]+ ", ", Theta2, ") = ", u1s[rr].round(2))
     
     print ("\n----------------------------------------------")
     print ("Player 1 Best Response with Player 2 Mixing")
@@ -352,7 +352,7 @@ if (rows != 2 or cols != 2):
     print ("Player 2 Expected Payoffs with Player 1 Mixing")
     print ("----------------------------------------------")
     for rr in range (u2s.size):
-        print ("U2("+ s2[rr]+ ", ", Theta1, ") = ", u2s[rr])
+        print ("U2("+ s2[rr]+ ", ", Theta1, ") = ", u2s[rr].round(2))
 
     # Print Best Response
     print ("\n----------------------------------------------")
@@ -381,8 +381,8 @@ if (rows != 2 or cols !=2):
     print("\n------------------------------------------------------")
     print("Player 1 & 2 Expected Payoffs with both Players Mixing")
     print("------------------------------------------------------")
-    print ("U1(", Theta1, ", ", Theta2,") = ", exp1)
-    print ("U1(", Theta2, ", ", Theta1,") = ", exp2)
+    print ("U1(", Theta1, ", ", Theta2,") = ", exp1.round(2))
+    print ("U1(", Theta2, ", ", Theta1,") = ", exp2.round(2))
 
 
 # # Case: 2x2 Game
